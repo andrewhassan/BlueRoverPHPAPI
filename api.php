@@ -14,6 +14,8 @@ class BlueRoverApi {
     private $token;
     private $base_url;
 
+    /********************* PUBLIC METHODS *********************/
+
     function __construct($key, $token, $base_url) {
         if (is_null($base_url) or empty($base_url)) {
             throw new Exception("The base URL cannot be empty.");
@@ -43,9 +45,39 @@ class BlueRoverApi {
         $this->base_url = $base_url;
     }
 
+    /**
+     * Call '/event' from API
+     *
+     * @param start_time: The starting time (as UNIX timestamp) for the range of events.
+     * @param end_time: The ending time (as UNIX timestamp) for the range of events.
+     * @param page_num: The page of results you wish to retrieve (paging starts at index 0).
+     *
+     * @return A string with the response from the server.
+     */
     function event($start_time, $end_time, $page_num) {
-        return $this -> call_api('/event', array('start_time' => $start_time, 'end_time' => $end_time, 'page' => $page_num), false);
+        return $this->call_api('/event', array('start_time' => $start_time, 'end_time' => $end_time, 'page' => $page_num), false);
     }
+
+    /**
+     * Call '/rfid' from API
+     *
+     * @return A string with the response from the server.
+     */
+    function rfid() {
+        return $this->call_api('/rfid', array(), false);
+    }
+
+    /**
+     * Call '/device' from API
+     *
+     * @return A string with the response from the server.
+     */
+    function device() {
+        return $this->call_api('/device', array(), false);
+    }
+
+
+    /********************* PRIVATE METHODS *********************/
 
     private function call_api($relative_url, $parameters = array(), $post_data = false) {
         // At the time of writing, the API does not support POST. So this value is set to false regardless of
